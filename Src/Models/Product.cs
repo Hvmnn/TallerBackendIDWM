@@ -22,8 +22,6 @@ namespace tallerBackendIDWM.Src.Models
         public required int Stock { get; set; }
 
         [FileExtensions(Extensions = "png,jpg", ErrorMessage = "Solo se permiten archivos .png y .jpg")]
-        public required string ImagenUrl { get; set; }
-
         [MaxFileSize(10 * 1024 * 1024, ErrorMessage = "El tamaño máximo del archivo es 10 MB")]
         public required IFormFile Image { get; set; }
     }
