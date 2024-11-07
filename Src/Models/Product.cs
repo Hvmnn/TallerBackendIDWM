@@ -24,6 +24,7 @@ namespace tallerBackendIDWM.Src.Models
         [FileExtensions(Extensions = "png,jpg", ErrorMessage = "Solo se permiten archivos .png y .jpg")]
         [MaxFileSize(10 * 1024 * 1024, ErrorMessage = "El tamaño máximo del archivo es 10 MB")]
         public required IFormFile Image { get; set; }
+        
     }
 
     public class MaxFileSizeAttribute : ValidationAttribute
