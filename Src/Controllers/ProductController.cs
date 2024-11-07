@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using tallerBackendIDWM.Src.DTOs;
 using tallerBackendIDWM.Src.Interfaces;
 using tallerBackendIDWM.Src.Models;
+using tallerBackendIDWM.Src.Services;
 
 namespace tallerBackendIDWM.Src.Controllers{
     [Authorize(Roles = "Administrador")]
@@ -10,10 +12,12 @@ namespace tallerBackendIDWM.Src.Controllers{
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICloudinaryService _cloudinaryServices;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, ICloudinaryService cloudinaryService)
         {
             _productRepository = productRepository;
+            _cloudinaryServices = cloudinaryService;
         }
 
         [HttpGet]
@@ -35,9 +39,43 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(Product product)
+        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDTO productDto)
         {
+            var supportedFormats = new[] { ".jpg", ".png"};
+
+            var extension = Path.GetExtension(productDto.Image.FileName).ToLower();
+
+            if (!supportedFormats.Contains(extension))
+            {
+                return BadRequest("Formato de imagen no válido. Formatos soportados: .jpg, .png");
+            }
+
+            if (productDto.Image.Length > 10 * 1024 * 1024)
+            {
+                return BadRequest("El tamaño máximo del archivo es 10 MB");
+            }
+
+            string imagenUrl;
+            try
+            {
+                imagenUrl = await _cloudinaryServices.UploadImageAsync(productDto.Image);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al subir la imagen: {ex.Message}");
+            }
+
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Type = productDto.Type,
+                Price = productDto.Price,
+                Stock = productDto.Stock,
+                Image = imagenUrl
+            };
+
             await _productRepository.CreateProductAsync(product);
+            
             return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
         }
 
