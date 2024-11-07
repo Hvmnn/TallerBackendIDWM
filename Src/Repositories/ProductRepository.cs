@@ -30,12 +30,28 @@ namespace tallerBackendIDWM.Src.Repositories{
 
         public async Task CreateProductAsync(Product product)
         {
+            bool productExists = await _context.Products.
+            AnyAsync(p => p.Name == product.Name && p.Type == product.Type);
+
+            if (productExists)
+            {
+                throw new InvalidOperationException("Ya existe un producto con el mismo nombre y tipo.");
+            }
+
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateProductAsync(Product product)
         {
+            bool productExists = await _context.Products.
+            AnyAsync(p => p.Name == product.Name && p.Type == product.Type);
+
+            if (productExists)
+            {
+                throw new InvalidOperationException("Ya existe un producto con el mismo nombre y tipo.");
+            }
+            
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
