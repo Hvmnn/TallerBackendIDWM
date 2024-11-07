@@ -80,13 +80,8 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, Product product)
+        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDTO editproductDto)
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
-
             var productToUpdate = await _productRepository.GetProductById(id);
 
             if (productToUpdate == null)
@@ -94,7 +89,41 @@ namespace tallerBackendIDWM.Src.Controllers{
                 return NotFound();
             }
 
-            await _productRepository.UpdateProductAsync(product);
+            productToUpdate.Name = editproductDto.Name;
+            productToUpdate.Type = editproductDto.Type;
+            productToUpdate.Price = editproductDto.Price;
+            productToUpdate.Stock = editproductDto.Stock;
+
+            if (editproductDto.Image != null)
+            {
+                var supportedFormats = new[] { ".jpg", ".png" };
+                var extension = Path.GetExtension(editproductDto.Image.FileName).ToLower();
+
+                if (!supportedFormats.Contains(extension))
+                {
+                    return BadRequest("Formato de imagen no válido. Formatos soportados: .jpg, .png");
+                }
+
+                if (editproductDto.Image.Length > 10 * 1024 * 1024)
+                {
+                    return BadRequest("El tamaño máximo del archivo es 10 MB");
+                }
+
+                string imagenUrl;
+                try
+                {
+                    imagenUrl = await _cloudinaryServices.UploadImageAsync(editproductDto.Image);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Error al subir la imagen: {ex.Message}");
+                }
+
+                productToUpdate.Image = imagenUrl;
+            }
+            
+
+            await _productRepository.UpdateProductAsync(productToUpdate);
             return NoContent();
         }
 
