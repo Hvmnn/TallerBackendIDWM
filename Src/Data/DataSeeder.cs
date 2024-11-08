@@ -1,12 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using tallerBackendIDWM.Src.Models;
 
 namespace tallerBackendIDWM.Src.Data
 {
-    public static class Seeder
+    public class DataSeeder
     {
-        public static async Task Seed(DataContext context)
+        private readonly DataContext _context;
+
+        public DataSeeder(DataContext context)
         {
-            if (context.Products.Any())
+            _context = context;
+        }
+        public async Task Seed()
+        {
+            if (_context.Products.Any())
             {
                 return;
             }
@@ -54,6 +61,24 @@ namespace tallerBackendIDWM.Src.Data
                     Image = "https://ejemplo.com/imagen5.jpg"
                 }
             };
+
+            if (!await _context.Users.AnyAsync(u => u.Email == "admin@idwm.cl"))
+            {
+                var administrador = new User
+                {
+                    Rut = "20.416.699-4",
+                    Name = "Ignacio Mancilla",
+                    Birthdate = new DateTime(2000, 10, 25),
+                    Email = "admin@idwm.cl",
+                    Gender = "Masculino",
+                    Password = "P4ssw0rd",
+                    Rol = "Administrador"
+                };
+
+                _context.Users.Add(administrador);
+                await _context.SaveChangesAsync();
+
+            }
         }
     }
 }

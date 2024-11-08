@@ -25,7 +25,6 @@ namespace tallerBackendIDWM.Src.Models
         [StringLength(20, MinimumLength = 8, ErrorMessage = "La contraseña debe tener entre 8 y 20 caracteres")]
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "La contraseña solo puede contener caracteres alfanuméricos")]
         public required string Password { get; set; }
-        public required string ConfirmPassword { get; set; }
         public required string Rol { get; set; }
 
 
