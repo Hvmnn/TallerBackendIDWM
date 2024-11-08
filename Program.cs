@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using tallerBackendIDWM.Src.Data;
 using tallerBackendIDWM.Src.Interfaces;
 using tallerBackendIDWM.Src.Repositories;
 
@@ -8,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseSqlite("Data Source = Taller1IDWM.db");
+});
 builder.Services.AddControllers();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddAuthorization(options =>
