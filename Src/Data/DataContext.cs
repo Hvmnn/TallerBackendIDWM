@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using tallerBackendIDWM.Src.Models;
+using TallerBackendIDWM.Src.Models;
 
 namespace tallerBackendIDWM.Src.Data
 {
@@ -7,10 +8,10 @@ namespace tallerBackendIDWM.Src.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
-
-        public DbSet<Product> Products { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<Gender> Genders {get; set;} = null!;
+        public DbSet<Role> Roles {get; set;} = null!;
+        public DbSet<User> Users {get; set;} = null!;
     }
 }
