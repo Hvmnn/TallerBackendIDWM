@@ -13,6 +13,8 @@ namespace TallerBackendIDWM.Src.Repositories.Interfaces
         Task<User?> GetUserById(int id);
         Task<User?> GetUserByEmail(string email);
         Task<bool> VerifyRut(string rut);
+        Task<bool> VerifyEmail(string email);
+        Task<bool> VerifyUser(int id);
         Task<bool> AddUser(User user);
         Task<bool> EditUser(int id);
         Task<bool> DelUser(int id);
