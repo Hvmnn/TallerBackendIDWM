@@ -50,11 +50,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-    await seeder.Seed();
+using (var scope = app.Services.CreateScope()){
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<DataContext>();
 
+    DataSeeder.Initialize(services);
 }
 
 // Configure the HTTP request pipeline.
