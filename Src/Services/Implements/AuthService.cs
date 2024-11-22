@@ -18,6 +18,14 @@ namespace TallerBackendIDWM.Src.Services.Implements
         private readonly IRoleRepository _roleRepository;
         private readonly IConfiguration _configuration;
         private readonly IMapperService _mapperService;
+
+        public AuthService(IUserRepository userRepository, IConfiguration configuration, IMapperService mapperService, IGenderRepository genderRepository, IRoleRepository roleRepository){
+            _userRepository = userRepository;
+            _configuration = configuration;
+            _mapperService = mapperService;
+            _genderRepository = genderRepository;
+            _roleRepository = roleRepository;
+        }
         public async Task<LoggedUserDto> Login(LoginUserDto loginUserDto)
         {
             string mensaje = "Credenciales incorrectas, intenta nuevamente.";
