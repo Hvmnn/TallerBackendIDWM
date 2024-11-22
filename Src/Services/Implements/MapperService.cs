@@ -11,9 +11,9 @@ namespace TallerBackendIDWM.Src.Services.Implements
         public MapperService(IMapper mapper){
             _mapper = mapper;
         }
-        public EditUserDto EditUserDtoToEditUser(EditUserDto editUserDto)
+        public EditUserInfoDto EditUserDtoToEditUser(EditUserDto editUserDto)
         {
-            var mappedUser = _mapper.Map<EditUserDto>(editUserDto);
+            var mappedUser = _mapper.Map<EditUserInfoDto>(editUserDto);
             return mappedUser;
         }
 
