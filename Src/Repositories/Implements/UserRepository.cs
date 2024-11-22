@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using tallerBackendIDWM.Src.Data;
+using TallerBackendIDWM.Src.Data;
+using TallerBackendIDWM.Src.DTOs.User;
 using TallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Repositories.Interfaces;
 
@@ -69,6 +66,11 @@ namespace TallerBackendIDWM.Src.Repositories.Implements
             }
 
             return true;
+        }
+
+        public Task<bool> EditUser(int id, EditUserDto editUserDto)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<User?> GetUserByEmail(string email)

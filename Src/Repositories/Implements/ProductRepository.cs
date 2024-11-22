@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Repositories.Interfaces;
 
@@ -70,16 +71,6 @@ namespace TallerBackendIDWM.Src.Repositories{
         }
 
         Task<Product> IProductRepository.GetProductById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateProductAsync(Product product)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateProductAsync(Product product)
         {
             throw new NotImplementedException();
         }

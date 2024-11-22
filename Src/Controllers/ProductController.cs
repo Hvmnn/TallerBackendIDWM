@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using tallerBackendIDWM.Src.DTOs;
-using tallerBackendIDWM.Src.Interfaces;
-using tallerBackendIDWM.Src.Models;
 using tallerBackendIDWM.Src.Services;
+using TallerBackendIDWM.Src.Models;
+using TallerBackendIDWM.Src.Repositories.Interfaces;
 
 namespace tallerBackendIDWM.Src.Controllers{
     [Authorize(Roles = "Administrador")]
