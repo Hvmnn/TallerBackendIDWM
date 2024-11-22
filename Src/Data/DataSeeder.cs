@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using TallerBackendIDWM.Src.Data;
 using TallerBackendIDWM.Src.Models;
 
-namespace tallerBackendIDWM.Src.Data
+namespace TallerBackendIDWMallerBackendIDWM.Src.Data
 {
     public class DataSeeder
     {

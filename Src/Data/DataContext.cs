@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using tallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Models;
 
-namespace tallerBackendIDWM.Src.Data
+namespace TallerBackendIDWM.Src.Data
 {
     public class DataContext : DbContext
     {
