@@ -16,6 +16,6 @@ namespace TallerBackendIDWM.Src.DTOs.User
         [DataType(DataType.Date)]
         public DateTime? Birthday { get; set; }
 
-        public string? GenderId { get; set; }
+        public int? GenderId { get; set; }
     }
 }
