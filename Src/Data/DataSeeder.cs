@@ -86,7 +86,8 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
                         Birthday = new DateTime(2000, 10, 25),
                         Email = "admin@idwm.cl",
                         GenderId = 1,
-                        Password = "P4ssw0rd",
+                        Password = BCrypt.Net.BCrypt.HashPassword("P4ssw0rd"),
+                        IsActive = true,
                         RoleId = 1
                     };
 
