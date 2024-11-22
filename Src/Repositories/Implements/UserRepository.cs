@@ -58,19 +58,22 @@ namespace TallerBackendIDWM.Src.Repositories.Implements
             return true;
         }
 
-        public async Task<bool> EditUser(int id)
+        public async Task<bool> EditUser(int id, EditUserDto editUserDto)
         {
-            var user = await _context.Users.FindAsync(id);
-            if(user == null){
+            var existUser = await _context.Users.FindAsync(id);
+            if(existUser == null){
                 return false;
             }
 
-            return true;
-        }
+            existUser.Name = editUserDto.Name ?? existUser.Name;
+            existUser.Birthday = editUserDto.Birthday ?? existUser.Birthday;
+            existUser.GenderId = editUserDto.GenderId ?? existUser.GenderId;
 
-        public Task<bool> EditUser(int id, EditUserDto editUserDto)
-        {
-            throw new NotImplementedException();
+
+            _context.Entry(existUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<User?> GetUserByEmail(string email)
