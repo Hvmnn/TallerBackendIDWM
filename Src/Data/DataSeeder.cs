@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using tallerBackendIDWM.Src.Models;
+using TallerBackendIDWM.Src.Models;
 
 namespace tallerBackendIDWM.Src.Data
 {
@@ -13,6 +13,22 @@ namespace tallerBackendIDWM.Src.Data
         }
         public async Task Seed()
         {
+            if(!_context.Roles.Any()){
+                _context.Roles.AddRange(
+                    new Role {Type = "Admin"},
+                    new Role { Type = "Usuario"}
+                );
+            }
+
+            if(!_context.Genders.Any()){
+                _context.Genders.AddRange(
+                    new Gender { Type = "Masculino"},
+                    new Gender { Type = "Femenino"},
+                    new Gender { Type = "Prefiero no decirlo"},
+                    new Gender { Type = "Otros"}
+                );
+            }
+            
             if (_context.Products.Any())
             {
                 return;
@@ -68,11 +84,11 @@ namespace tallerBackendIDWM.Src.Data
                 {
                     Rut = "20.416.699-4",
                     Name = "Ignacio Mancilla",
-                    Birthdate = new DateTime(2000, 10, 25),
+                    Birthday = new DateTime(2000, 10, 25),
                     Email = "admin@idwm.cl",
-                    Gender = "Masculino",
+                    GenderId = 1,
                     Password = "P4ssw0rd",
-                    Rol = "Administrador"
+                    RoleId = 1
                 };
 
                 _context.Users.Add(administrador);
