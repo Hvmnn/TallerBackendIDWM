@@ -1,9 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using tallerBackendIDWM.Src.Data;
-using tallerBackendIDWM.Src.Interfaces;
-using tallerBackendIDWM.Src.Models;
+using TallerBackendIDWM.Src.Models;
+using TallerBackendIDWM.Src.Repositories.Interfaces;
 
-namespace tallerBackendIDWM.Src.Repositories{
+namespace TallerBackendIDWM.Src.Repositories{
     public class ProductRepository : IProductRepository
     {
         private readonly DataContext _context;
@@ -64,6 +62,26 @@ namespace tallerBackendIDWM.Src.Repositories{
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        Task<IEnumerable<Product>> IProductRepository.GetProductsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Product> IProductRepository.GetProductById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateProductAsync(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateProductAsync(Product product)
+        {
+            throw new NotImplementedException();
         }
     }
 }
