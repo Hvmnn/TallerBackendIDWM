@@ -13,7 +13,7 @@ using TallerBackendIDWM.Src.Services.Interface;
 
 namespace TallerBackendIDWM.Src.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
