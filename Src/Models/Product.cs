@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace tallerBackendIDWM.Src.Models
+namespace TallerBackendIDWM.Src.Models
 {
     using System;
     using Microsoft.AspNetCore.Http;
