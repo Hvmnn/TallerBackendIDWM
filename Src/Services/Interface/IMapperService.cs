@@ -12,7 +12,7 @@ namespace TallerBackendIDWM.Src.Services.Interface
         public IEnumerable<UserDto> MapUsers(IEnumerable<User> users);
         public User RegisterClientDtoToUser(RegisterUserDto registerUserDto);
         public UserDto UserToUserDto(User user);
-        public EditUserDto EditUserDtoToEditUser(EditUserDto editUserDto);
+        public EditUserInfoDto EditUserDtoToEditUser(EditUserDto editUserDto);
 
     }
 }

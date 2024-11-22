@@ -58,7 +58,7 @@ namespace TallerBackendIDWM.Src.Repositories.Implements
             return true;
         }
 
-        public async Task<bool> EditUser(int id, EditUserDto editUserDto)
+        public async Task<bool> EditUser(int id, EditUserInfoDto editUserDto)
         {
             var existUser = await _context.Users.FindAsync(id);
             if(existUser == null){

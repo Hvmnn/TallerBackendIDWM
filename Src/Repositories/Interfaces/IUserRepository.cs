@@ -17,7 +17,7 @@ namespace TallerBackendIDWM.Src.Repositories.Interfaces
         Task<bool> VerifyEmail(string email);
         Task<bool> VerifyUser(int id);
         Task<bool> AddUser(User user);
-        Task<bool> EditUser(int id, EditUserDto editUserDto);
+        Task<bool> EditUser(int id, EditUserInfoDto editUserDto);
         Task<bool> DelUser(int id);
         Task<bool>ChangeUserState(int id, bool userStatus);
         Task<bool>ChangePassword(int id, string newPassword);
