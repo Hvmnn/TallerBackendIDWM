@@ -23,7 +23,7 @@ namespace TallerBackendIDWM.Src.Repositories{
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
-                throw new KeyNotFoundException("Product with id {id} not found.");
+                throw new KeyNotFoundException("El Producto con este id {id} no existe.");
             }
             return product;
         }
