@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TallerBackendIDWM.Src.Helpers.Validator;
 
 namespace TallerBackendIDWM.Src.DTOs.User
 {
     public class RegisterUserDto
     {
+        [RutValidation]
         public string Rut { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El Nombre es obligatorio.")]
@@ -19,6 +21,7 @@ namespace TallerBackendIDWM.Src.DTOs.User
              
         [Required(ErrorMessage = "La Fecha de Nacimiento es obligatoria.")]
         [DataType(DataType.Date)]  
+        [DateValidation]
         public string Birthday { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El Email es obligatorio.")]
@@ -26,6 +29,7 @@ namespace TallerBackendIDWM.Src.DTOs.User
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El Género es obligatorio.")]
+        [GenderValidation]
         public string GenderId { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La Contraseña es obligatoria.")]

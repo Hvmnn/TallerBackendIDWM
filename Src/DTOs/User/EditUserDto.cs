@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TallerBackendIDWM.Src.Helpers.Validator;
 
 namespace TallerBackendIDWM.Src.DTOs.User
 {
@@ -14,8 +15,10 @@ namespace TallerBackendIDWM.Src.DTOs.User
         public string? Name { get; set; }
         
         [DataType(DataType.Date)]
+        [DateValidation]
         public DateTime? Birthday { get; set; }
 
+        [GenderValidation]
         public string? GenderId { get; set; }
     }
 }
