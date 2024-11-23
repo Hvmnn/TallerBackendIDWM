@@ -77,6 +77,8 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
                     }
                 };
 
+                var generatedRuts = new HashSet<string>();
+
                 if (!context.Users.Any())
                 {
                     var administrador = new User
@@ -91,6 +93,7 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
                         RoleId = 1
                     };
 
+                    generatedRuts.Add(administrador.Rut);
                     context.Users.Add(administrador);
 
                     context.SaveChanges();
