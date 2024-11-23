@@ -1,6 +1,6 @@
 using TallerBackendIDWM.Src.DTOs.Shopping;
 
-namespace TallerBackendIDWM.Src.Services
+namespace TallerBackendIDWM.Src.Services.Interface
 {
     public interface IShoppingCartService
     {

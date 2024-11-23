@@ -16,12 +16,14 @@ namespace TallerBackendIDWM.Src.Helpers
             CreateMap<RegisterUserDto,User>();
             CreateMap<EditUserDto, EditUserInfoDto>();
             CreateMap<ShoppingCart, ShoppingCartDto>()
-                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.CartItems.Sum(ci => ci.Quantity * ci.Product.Price)));
+                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.CartItems.Sum(ci => ci.Quantity * ci.Product.Price)))
+                .ReverseMap();
             
             CreateMap<CartItem, CartItemDto>()
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.Price))
-                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Quantity * src.Product.Price));
+                .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Quantity * src.Product.Price))
+                .ReverseMap();
         }
     }
 }
