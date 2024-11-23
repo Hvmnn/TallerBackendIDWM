@@ -1,5 +1,3 @@
-
-
 namespace TallerBackendIDWM.Src.Models
 {
     public class User

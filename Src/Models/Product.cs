@@ -1,9 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TallerBackendIDWM.Src.Models
 {
-    using System;
-    using Microsoft.AspNetCore.Http;
 
     public class Product 
     {
