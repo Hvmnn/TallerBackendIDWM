@@ -11,8 +11,6 @@ using TallerBackendIDWMallerBackendIDWM.Src.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -55,6 +53,7 @@ using (var scope = app.Services.CreateScope()){
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<DataContext>();
 
+    dbContext.Database.Migrate();
     DataSeeder.Initialize(services);
 }
 
@@ -65,7 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowLocalHost");
+app.UseCors("AllowLocalhost");
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

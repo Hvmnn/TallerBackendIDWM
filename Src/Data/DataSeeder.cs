@@ -12,8 +12,10 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
 
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<DataContext>();
+                Console.WriteLine("Seeding data...");
                 
                 if(!context.Roles.Any()){
+                    Console.WriteLine("Seeding roles...");
                     context.Roles.AddRange(
                         new Role {Type = "Admin"},
                         new Role { Type = "Usuario"}
@@ -21,6 +23,7 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
                 }
 
                 if(!context.Genders.Any()){
+                    Console.WriteLine("Seeding genders...");
                     context.Genders.AddRange(
                         new Gender { Type = "Masculino"},
                         new Gender { Type = "Femenino"},
@@ -82,6 +85,7 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
 
                 if (!context.Users.Any())
                 {
+                    Console.WriteLine("Seeding users...");
                     var administrador = new User
                     {
                         Rut = "20.416.699-4",
@@ -110,8 +114,10 @@ namespace TallerBackendIDWMallerBackendIDWM.Src.Data
                     var users = faker.Generate(20);
 
                     context.Users.AddRange(users);
+                    context.Products.AddRange(products);
 
                     context.SaveChanges();
+                    Console.WriteLine("Data seeded successfully!");
                 }
             }
         }
