@@ -18,40 +18,19 @@ namespace TallerBackendIDWM.Src.Repositories{
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<Product> GetProductById(int id)
+        public async Task<Product?> GetProductById(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                throw new KeyNotFoundException("El Producto con este id {id} no existe.");
-            }
-            return product;
+            return await _context.Products.FindAsync(id);
         }
 
         public async Task CreateProductAsync(Product product)
         {
-            bool productExists = await _context.Products.
-            AnyAsync(p => p.Name == product.Name && p.Type == product.Type);
-
-            if (productExists)
-            {
-                throw new InvalidOperationException("Ya existe un producto con el mismo nombre y tipo.");
-            }
-
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateProductAsync(Product product)
         {
-            bool productExists = await _context.Products.
-            AnyAsync(p => p.Name == product.Name && p.Type == product.Type);
-
-            if (productExists)
-            {
-                throw new InvalidOperationException("Ya existe un producto con el mismo nombre y tipo.");
-            }
-            
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
         }
@@ -64,16 +43,6 @@ namespace TallerBackendIDWM.Src.Repositories{
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
-        }
-
-        Task<IEnumerable<Product>> IProductRepository.GetProductsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<Product> IProductRepository.GetProductById(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
