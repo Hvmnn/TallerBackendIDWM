@@ -11,7 +11,7 @@ namespace tallerBackendIDWM.Src.DTOs.Product{
         public required string Type { get; set; }
 
         [Range(0, 100000000, ErrorMessage = "El precio debe estar entre 0 y 100000000")]
-        public required int Price { get; set; }
+        public required decimal Price { get; set; }
 
         [Range(0, 100000, ErrorMessage = "El stock debe estar entre 0 y 100000")]
         public required int Stock { get; set; }

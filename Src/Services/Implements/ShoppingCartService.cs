@@ -86,7 +86,10 @@ namespace TallerBackendIDWM.Src.Services.Implements
         {
             var cart = await _shoppingCartRepository.GetShoppingCart(userId);
 
-            if (cart == null) return null;
+            if (cart == null)
+            {
+                throw new InvalidOperationException("El carrito no existe.");
+            }
 
             return _mapperService.MapShoppingCart(cart);
         }
