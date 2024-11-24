@@ -63,6 +63,21 @@ namespace TallerBackendIDWM.Src.Services.Implements
             return result;
         }
 
+        public async Task<bool> DeleteUser(int id)
+        {
+            var user = await _userRepository.GetUserById(id);
+            if(user == null){
+                throw new Exception("El usuario no existe.");
+            }
+            
+            var result = await _userRepository.DelUser(id);
+            if(!result){
+                throw new Exception("No se pudo eliminar la cuenta");
+            }
+
+            return true;
+        }
+
         public async Task<bool> EditUser(int id, EditUserDto editUserDto)
         {
             if(editUserDto.GenderId != null && !_genderRepository.ValidateGenderId(int.Parse(editUserDto.GenderId)).Result){

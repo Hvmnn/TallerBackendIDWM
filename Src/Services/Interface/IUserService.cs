@@ -15,5 +15,6 @@ namespace TallerBackendIDWM.Src.Services.Interface
         Task<IEnumerable<UserDto>> SearchUsers(string query);
         Task<IEnumerable<Gender>> GetGenders();
         Task<bool> ChangeUserState(int id, bool userState);
+        Task<bool> DeleteUser(int id);
     }
 }
