@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using TallerBackendIDWM.Src.Models;
 
 namespace TallerBackendIDWM.Src.Data
@@ -14,7 +15,8 @@ namespace TallerBackendIDWM.Src.Data
         public DbSet<User> Users {get; set;} = null!;
         public DbSet<CartItem> CartItems {get; set;} = null!;
         public DbSet<ShoppingCart> ShoppingCarts {get; set;} = null!;
-        
+        public DbSet<Sale> Sales {get; set;} = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
