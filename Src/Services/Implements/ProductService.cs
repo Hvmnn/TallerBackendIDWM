@@ -9,15 +9,20 @@ namespace TallerBackendIDWM.Src.Services.Implements
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapperService _mapperService;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public ProductService(IProductRepository productRepository, IMapperService mapperService)
+        public ProductService(IProductRepository productRepository, IMapperService mapperService, ICloudinaryService cloudinaryService)
         {
             _productRepository = productRepository;
             _mapperService = mapperService;
+            _cloudinaryService = cloudinaryService;
         }
         public async Task CreateProductAsync(CreateProductDto productDto)
         {
+            var imageUrl = await _cloudinaryService.UploadImageAsync(productDto.Image);
             var product = _mapperService.MapProduct(productDto);
+            product.Image = imageUrl;
+
             await _productRepository.CreateProductAsync(product);
         }
 
@@ -38,7 +43,7 @@ namespace TallerBackendIDWM.Src.Services.Implements
             return _mapperService.MapProducts(products);
         }
 
-        public async Task UpdateProductAsync(int id, CreateProductDto productDto)
+        public async Task UpdateProductAsync(int id, CreateProductDto productDto, IFormFile? imageFile)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null)
@@ -46,8 +51,17 @@ namespace TallerBackendIDWM.Src.Services.Implements
                 throw new InvalidOperationException("Producto no encontrado.");
             }
 
-            product = _mapperService.MapProduct(productDto);
-            product.Id = id;
+            if(imageFile != null)
+            {
+                var imageUrl = await _cloudinaryService.UploadImageAsync(imageFile);
+                product.Image = imageUrl;
+            }
+
+            product.Name = productDto.Name;
+            product.Type = productDto.Type;
+            product.Price = productDto.Price;
+            product.Stock = productDto.Stock;
+
             await _productRepository.UpdateProductAsync(product);
         }
     }

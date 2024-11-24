@@ -27,7 +27,7 @@ namespace TallerBackendIDWM.Src.Helpers
                 .ReverseMap();
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
         }
     }
 }

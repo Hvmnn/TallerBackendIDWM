@@ -1,142 +1,75 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using TallerBackendIDWM.Src.DTOs.Product;
 using TallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Repositories.Interfaces;
 using TallerBackendIDWM.Src.Services;
+using TallerBackendIDWM.Src.Services.Implements;
+using TallerBackendIDWM.Src.Services.Interface;
 
 namespace tallerBackendIDWM.Src.Controllers{
-    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICloudinaryService _cloudinaryServices;
+        private readonly IProductService _productService;
 
-        public ProductController(IProductRepository productRepository, ICloudinaryService cloudinaryService)
+        public ProductController(IProductService productService)
         {
-            _productRepository = productRepository;
-            _cloudinaryServices = cloudinaryService;
+            _productService = productService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var products = await _productRepository.GetProductsAsync();
+            var products = await _productService.GetProductsAsync();
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var product = await _productRepository.GetProductByIdAsync(id);
+            var product = await _productService.GetProductByIdAsync(id);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Producto no encontrado." });
             }
+
             return Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDto productDto)
+        public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto productDto)
         {
-            var supportedFormats = new[] { ".jpg", ".png"};
-
-            var extension = Path.GetExtension(productDto.Image.FileName).ToLower();
-
-            if (!supportedFormats.Contains(extension))
+            if(productDto.Image == null || productDto.Image.Length == 0)
             {
-                return BadRequest("Formato de imagen no válido. Formatos soportados: .jpg, .png");
+                return BadRequest(new {message = "La imagen es requerida"});
             }
 
-            if (productDto.Image.Length > 10 * 1024 * 1024)
-            {
-                return BadRequest("El tamaño máximo del archivo es 10 MB");
-            }
-
-            string imagenUrl;
-            try
-            {
-                imagenUrl = await _cloudinaryServices.UploadImageAsync(productDto.Image);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al subir la imagen: {ex.Message}");
-            }
-
-            var product = new Product
-            {
-                Name = productDto.Name,
-                Type = productDto.Type,
-                Price = productDto.Price,
-                Stock = productDto.Stock,
-                Image = imagenUrl
-            };
-
-            await _productRepository.CreateProductAsync(product);
-            
-            return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+            await _productService.CreateProductAsync(productDto);
+            return CreatedAtAction(nameof(GetProductById), new { id = productDto.Name }, productDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDto editproductDto)
+        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDto editproductDto, [FromForm] IFormFile? imageFile)
         {
-            var productToUpdate = await _productRepository.GetProductByIdAsync(id);
-
-            if (productToUpdate == null)
+            try
             {
-                return NotFound();
+                await _productService.UpdateProductAsync(id, editproductDto, imageFile);
+                return NoContent();
             }
-
-            productToUpdate.Name = editproductDto.Name;
-            productToUpdate.Type = editproductDto.Type;
-            productToUpdate.Price = editproductDto.Price;
-            productToUpdate.Stock = editproductDto.Stock;
-
-            if (editproductDto.Image != null)
+            catch (InvalidOperationException ex)
             {
-                var supportedFormats = new[] { ".jpg", ".png" };
-                var extension = Path.GetExtension(editproductDto.Image.FileName).ToLower();
-
-                if (!supportedFormats.Contains(extension))
-                {
-                    return BadRequest("Formato de imagen no válido. Formatos soportados: .jpg, .png");
-                }
-
-                if (editproductDto.Image.Length > 10 * 1024 * 1024)
-                {
-                    return BadRequest("El tamaño máximo del archivo es 10 MB");
-                }
-
-                string imagenUrl;
-                try
-                {
-                    imagenUrl = await _cloudinaryServices.UploadImageAsync(editproductDto.Image);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, $"Error al subir la imagen: {ex.Message}");
-                }
-
-                productToUpdate.Image = imagenUrl;
+                return NotFound(new { message = ex.Message });
             }
-            
-
-            await _productRepository.UpdateProductAsync(productToUpdate);
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            var product = await _productRepository.GetProductByIdAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            await _productRepository.DeleteProductAsync(id);
+            await _productService.DeleteProductAsync(id);
             return NoContent();
         }
     }
