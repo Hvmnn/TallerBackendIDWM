@@ -105,5 +105,21 @@ namespace TallerBackendIDWM.Src.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUser(int id){
+            try{
+                var result = await _service.DeleteUser(id);
+                if(!result){
+                    return NotFound("Usuario no encontrado.");
+                }
+
+                return Ok("Usuario eliminado exitosamente.");
+            }
+            catch(Exception ex){
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
