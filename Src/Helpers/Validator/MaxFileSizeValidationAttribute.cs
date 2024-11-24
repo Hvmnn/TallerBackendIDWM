@@ -10,17 +10,20 @@ namespace TallerBackendIDWM.Src.Helpers.Validator
             _maxFileSize = maxFileSize;
         }
 
-        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value is IFormFile file)
         {
-            if (value is IFormFile file)
+            if (file.Length > _maxFileSize)
             {
-                if (file.Length > _maxFileSize)
-                {
-                    return new ValidationResult(ErrorMessage ?? $"El tamaño máximo del archivo es {_maxFileSize} bytes.");
-                }
+                double maxFileSizeInMb = _maxFileSize / (1024.0 * 1024.0);
+                return new ValidationResult(
+                    ErrorMessage ?? $"El tamaño máximo del archivo es {maxFileSizeInMb:F2} MB."
+                );
             }
-
-            return ValidationResult.Success!;
         }
+
+        return ValidationResult.Success;
+    }
     }
 }

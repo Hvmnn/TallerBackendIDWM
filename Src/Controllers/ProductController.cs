@@ -53,11 +53,19 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDto editproductDto, [FromForm] IFormFile? imageFile)
+        public async Task<ActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto editproductDto)
         {
             try
             {
-                await _productService.UpdateProductAsync(id, editproductDto, imageFile);
+                var productDto = new CreateProductDto
+                {
+                    Name = editproductDto.Name,
+                    Type = editproductDto.Type,
+                    Price = editproductDto.Price,
+                    Stock = editproductDto.Stock,
+                    Image = null
+                };
+                await _productService.UpdateProductAsync(id, productDto, editproductDto.Image);
                 return NoContent();
             }
             catch (InvalidOperationException ex)

@@ -19,9 +19,12 @@ namespace TallerBackendIDWM.Src.Services.Implements
         }
         public async Task CreateProductAsync(CreateProductDto productDto)
         {
-            var imageUrl = await _cloudinaryService.UploadImageAsync(productDto.Image);
+            var imageUrl = productDto.Image != null ? await _cloudinaryService.UploadImageAsync(productDto.Image) : null;
             var product = _mapperService.MapProduct(productDto);
-            product.Image = imageUrl;
+            if (imageUrl != null)
+            {
+                product.Image = imageUrl;
+            }
 
             await _productRepository.CreateProductAsync(product);
         }

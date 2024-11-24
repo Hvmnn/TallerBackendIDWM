@@ -16,9 +16,9 @@ namespace TallerBackendIDWM.Src.DTOs.Product{
         [Range(0, 100000, ErrorMessage = "El stock debe estar entre 0 y 100000")]
         public required int Stock { get; set; }
 
-        [FileExtensions(Extensions = "png,jpg", ErrorMessage = "Solo se permiten archivos .png y .jpg")]
+        [AllowedExtensionsAndMimeTypes(new[] { ".png", ".jpg" }, new[] { "image/png", "image/jpeg" })]
         [MaxFileSize(10 * 1024 * 1024, ErrorMessage = "El tamaño máximo del archivo es 10 MB")]
-        public required IFormFile Image { get; set; }
+        public required IFormFile? Image { get; set; }
 
     }
 }

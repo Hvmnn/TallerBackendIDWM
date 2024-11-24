@@ -8,6 +8,7 @@ using TallerBackendIDWM.Src.Repositories.Interfaces;
 using TallerBackendIDWM.Src.Services.Implements;
 using TallerBackendIDWM.Src.Services.Interface;
 using TallerBackendIDWMallerBackendIDWM.Src.Data;
+using TallerBackendIDWM.Src.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,13 @@ builder.Services.AddScoped<IGenderRepository, GenderRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<ISaleRepository, SaleRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<IMapperService, MapperService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 

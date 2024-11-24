@@ -28,21 +28,29 @@ namespace TallerBackendIDWM.Src.Services.Implements
             if (cart == null)
             {
                 cart = new ShoppingCart { UserId = userId, CartItems = new List<CartItem>() };
+                await _shoppingCartRepository.CreateAsync(cart);
             }
 
             var existingItem = cart.CartItems.FirstOrDefault(ci => ci.ProductId == productId);
 
-            if(existingItem != null)
+            if (existingItem != null)
             {
                 existingItem.Quantity += quantity;
             }
             else
             {
-                cart.CartItems.Add(new CartItem { ProductId = productId, Quantity = quantity });
+                var newItem = new CartItem
+                {
+                    ProductId = productId,
+                    Quantity = quantity,
+                    Id = cart.Id
+                };
+                cart.CartItems.Add(newItem);
             }
 
-            await _shoppingCartRepository.AddCartItem(cart.Id, new CartItem { ProductId = productId, Quantity = quantity });
+            await _shoppingCartRepository.UpdateAsync(cart);
         }
+
 
         public async Task UpdateItemQuantityAsync(int userId, int productId, int quantity)
         {
@@ -88,7 +96,9 @@ namespace TallerBackendIDWM.Src.Services.Implements
 
             if (cart == null)
             {
-                throw new InvalidOperationException("El carrito no existe.");
+                cart = new ShoppingCart { UserId = userId, CartItems = new List<CartItem>() };
+
+                await _shoppingCartRepository.CreateAsync(cart);
             }
 
             return _mapperService.MapShoppingCart(cart);

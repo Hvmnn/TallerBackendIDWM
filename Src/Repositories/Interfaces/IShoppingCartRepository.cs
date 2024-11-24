@@ -6,6 +6,8 @@ namespace TallerBackendIDWM.Src.Repositories.Interfaces
 
     public interface IShoppingCartRepository
     {
+        Task CreateAsync(ShoppingCart cart);
+        Task UpdateAsync(ShoppingCart cart);
         Task<ShoppingCart?> GetShoppingCart(int userId);
         Task AddCartItem(int cartId, CartItem cartItem);
         Task UpdateCartItem(int cartId, int productId, int quantity);

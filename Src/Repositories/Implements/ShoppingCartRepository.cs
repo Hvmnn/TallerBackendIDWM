@@ -14,6 +14,17 @@ namespace TallerBackendIDWM.Src.Repositories.Implements
             _context = context;
         }
 
+        public async Task CreateAsync(ShoppingCart cart)
+        {
+            await _context.ShoppingCarts.AddAsync(cart);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(ShoppingCart cart)
+        {
+            _context.ShoppingCarts.Update(cart);
+            await _context.SaveChangesAsync();
+        }
         public async Task<ShoppingCart?> GetShoppingCart(int userId)
             => await _context.ShoppingCarts
                 .Include(sc => sc.CartItems)
