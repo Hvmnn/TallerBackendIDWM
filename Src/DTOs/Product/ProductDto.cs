@@ -1,4 +1,4 @@
-namespace TallerBackendIDWM.Src.DTOs
+namespace TallerBackendIDWM.Src.DTOs.Product
 {
     public class ProductDto
     {

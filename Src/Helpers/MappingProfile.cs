@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using TallerBackendIDWM.Src.DTOs.Product;
 using TallerBackendIDWM.Src.DTOs.Shopping;
 using TallerBackendIDWM.Src.DTOs.User;
 using TallerBackendIDWM.Src.Models;
@@ -24,6 +25,9 @@ namespace TallerBackendIDWM.Src.Helpers
                 .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.Price))
                 .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Quantity * src.Product.Price))
                 .ReverseMap();
+            CreateMap<Product, ProductDto>();
+            CreateMap<CreateProductDto, Product>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

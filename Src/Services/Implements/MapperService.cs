@@ -1,4 +1,5 @@
 using AutoMapper;
+using TallerBackendIDWM.Src.DTOs.Product;
 using TallerBackendIDWM.Src.DTOs.Shopping;
 using TallerBackendIDWM.Src.DTOs.User;
 using TallerBackendIDWM.Src.Models;
@@ -44,6 +45,21 @@ namespace TallerBackendIDWM.Src.Services.Implements
         public IEnumerable<CartItemDto> MapCartItems(IEnumerable<CartItem> cartItems)
         {
             return cartItems.Select(ci => _mapper.Map<CartItemDto>(ci)).ToList();
+        }
+
+        public ProductDto MapProduct(Product product)
+        {
+            return _mapper.Map<ProductDto>(product);
+        }
+
+        public Product MapProduct(CreateProductDto productDto)
+        {
+            return _mapper.Map<Product>(productDto);
+        }
+
+        public IEnumerable<ProductDto> MapProducts(IEnumerable<Product> products)
+        {
+            return products.Select(p => _mapper.Map<ProductDto>(p)).ToList();
         }
     }
 }

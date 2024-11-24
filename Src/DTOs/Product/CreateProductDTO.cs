@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using TallerBackendIDWM.Src.Helpers.Validator;
 
-namespace tallerBackendIDWM.Src.DTOs.Product{
-    public class CreateProductDTO
+namespace TallerBackendIDWM.Src.DTOs.Product{
+    public class CreateProductDto
     {
         [StringLength(64, MinimumLength = 10, ErrorMessage = "El nombre debe tener entre 10 y 64 caracteres")]
         public required string Name { get; set; }

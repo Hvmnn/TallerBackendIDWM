@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using tallerBackendIDWM.Src.DTOs.Product;
-using tallerBackendIDWM.Src.Services;
+using TallerBackendIDWM.Src.DTOs.Product;
 using TallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Repositories.Interfaces;
+using TallerBackendIDWM.Src.Services;
 
 namespace tallerBackendIDWM.Src.Controllers{
     [Authorize(Roles = "Admin")]
@@ -30,7 +30,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var product = await _productRepository.GetProductById(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();
@@ -39,7 +39,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDTO productDto)
+        public async Task<ActionResult> CreateProduct([FromForm] CreateProductDto productDto)
         {
             var supportedFormats = new[] { ".jpg", ".png"};
 
@@ -80,9 +80,9 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDTO editproductDto)
+        public async Task<ActionResult> UpdateProduct(int id, [FromForm] CreateProductDto editproductDto)
         {
-            var productToUpdate = await _productRepository.GetProductById(id);
+            var productToUpdate = await _productRepository.GetProductByIdAsync(id);
 
             if (productToUpdate == null)
             {
@@ -130,7 +130,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
-            var product = await _productRepository.GetProductById(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null)
             {
                 return NotFound();

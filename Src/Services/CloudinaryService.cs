@@ -2,7 +2,7 @@ using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
 
-namespace tallerBackendIDWM.Src.Services
+namespace TallerBackendIDWM.Src.Services
 {
     public class CloudinarySettings
     {
