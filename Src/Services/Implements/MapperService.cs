@@ -61,5 +61,22 @@ namespace TallerBackendIDWM.Src.Services.Implements
         {
             return products.Select(p => _mapper.Map<ProductDto>(p)).ToList();
         }
+        
+        public SaleDto MapSale(Sale sale)
+        {
+            return _mapper.Map<SaleDto>(sale);
+        }
+
+        public SaleDetailDto MapSaleDetail(Sale sale)
+        {
+            var saleDetail = _mapper.Map<SaleDetailDto>(sale);
+            saleDetail.SaleItems = sale.SaleItems.Select(_mapper.Map<SaleItemDto>).ToList();
+            return saleDetail;
+        }
+
+        public IEnumerable<SaleDto> MapSales(IEnumerable<Sale> sales)
+        {
+            return sales.Select(s => _mapper.Map<SaleDto>(s)).ToList();
+        }
     }
 }

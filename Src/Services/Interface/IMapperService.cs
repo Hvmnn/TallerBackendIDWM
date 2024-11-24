@@ -21,6 +21,9 @@ namespace TallerBackendIDWM.Src.Services.Interface
         public ProductDto MapProduct(Product product);
         public Product MapProduct(CreateProductDto productDto);
         public IEnumerable<ProductDto> MapProducts(IEnumerable<Product> products);
+        public SaleDto MapSale(Sale sale);
+        public SaleDetailDto MapSaleDetail(Sale sale);
+        public IEnumerable<SaleDto> MapSales(IEnumerable<Sale> sales);
 
     }
 }

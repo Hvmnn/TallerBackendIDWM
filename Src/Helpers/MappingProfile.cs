@@ -28,6 +28,14 @@ namespace TallerBackendIDWM.Src.Helpers
             CreateMap<Product, ProductDto>();
             CreateMap<CreateProductDto, Product>()
                 .ForMember(dest => dest.Image, opt => opt.Ignore());
+            CreateMap<Sale, SaleDto>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
+            CreateMap<Sale, SaleDetailDto>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
+            CreateMap<SaleItem, SaleItemDto>()
+                .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(dest => dest.ProductPrice, opt => opt.MapFrom(src => src.Product.Price))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Total));
         }
     }
 }
