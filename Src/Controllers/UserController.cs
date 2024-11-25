@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace TallerBackendIDWM.Src.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+        private readonly ITokenService _serviceToken;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ITokenService tokenService)
         {
             _service = userService;
+            _serviceToken = tokenService;
         }
 
         [HttpGet]
@@ -106,16 +109,20 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize]
-        public async Task<IActionResult> DeleteUser(int id){
+        public async Task<IActionResult> DeleteUser(){
             try{
-                var result = await _service.DeleteUser(id);
+                var userId = _serviceToken.GetUserIdFromToken();
+                var result = await _service.DeleteUser(userId);
                 if(!result){
-                    return NotFound("Usuario no encontrado.");
+                    return BadRequest("No se pudo eliminar la cuenta.");
                 }
 
-                return Ok("Usuario eliminado exitosamente.");
+                return Ok("Cuenta eliminada exitosamente.");
+            }
+            catch (UnauthorizedAccessException ex){
+                return Unauthorized(ex.Message);
             }
             catch(Exception ex){
                 return BadRequest(ex.Message);
