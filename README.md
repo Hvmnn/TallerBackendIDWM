@@ -50,6 +50,14 @@ En Visual Studio Code, ir a File -> Open Folder, y seleccionar la carpeta Taller
 En la terminal de Visual Studio Code ejecutar el siguiente comando:
 
 ```bash
+dotnet ef migrations add Initial
+```
+
+```bash
+dotnet ef database update
+```
+
+```bash
 dotnet run
 ```
 
