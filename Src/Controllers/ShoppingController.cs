@@ -4,18 +4,32 @@ using TallerBackendIDWM.Src.Services.Interface;
 
 namespace TallerBackendIDWM.Src.Controllers
 {
+    /// <summary>
+    /// Controlador para gestionar el carrito de compras de los usuarios.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class ShoppingController : ControllerBase
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IMapperService _mapperService;
+
+        /// <summary>
+        /// Constructor del controlador del carrito de compras.
+        /// </summary>
+        /// <param name="shoppingCartService">Servicio de carrito de compras.</param>
+        /// <param name="mapperService">Servicio de mapeo de datos.</param>
         public ShoppingController(IShoppingCartService shoppingCartService, IMapperService mapperService)
         {
             _shoppingCartService = shoppingCartService;
             _mapperService = mapperService;
         }
 
+        /// <summary>
+        /// Obtiene el carrito de compras de un usuario específico.
+        /// </summary>
+        /// <param name="userId">ID del usuario.</param>
+        /// <returns>Carrito de compras del usuario.</returns>
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetCart(int userId)
         {
@@ -29,6 +43,12 @@ namespace TallerBackendIDWM.Src.Controllers
             return Ok(cartDto);
         }
 
+        /// <summary>
+        /// Agrega un producto al carrito de compras de un usuario.
+        /// </summary>
+        /// <param name="userId">ID del usuario.</param>
+        /// <param name="cartItemDto">Detalles del producto a agregar.</param>
+        /// <returns>Confirmación de la operación.</returns>
         [HttpPost("{userId}/add")]
         public async Task<IActionResult> AddItemToCart(int userId, [FromBody] CartItemDto cartItemDto)
         {
@@ -41,6 +61,12 @@ namespace TallerBackendIDWM.Src.Controllers
             return Ok(new { message = "Producto agregado al carrito." });
         }
 
+        /// <summary>
+        /// Actualiza la cantidad de un producto en el carrito de un usuario.
+        /// </summary>
+        /// <param name="userId">ID del usuario.</param>
+        /// <param name="productId">ID del producto.</param>
+        /// <param name="quantity">Nueva cantidad del producto.</param>
         [HttpPut("{userId}/update/{productId}")]
         public async Task<IActionResult> UpdateItemQuantity(int userId, int productId, [FromBody] int quantity)
         {
@@ -60,6 +86,11 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Elimina un producto del carrito de un usuario.
+        /// </summary>
+        /// <param name="userId">ID del usuario.</param>
+        /// <param name="productId">ID del producto.</param>
         [HttpDelete("{userId}/delete/{productId}")]
         public async Task<IActionResult> DeleteItemFromCart(int userId, int productId)
         {
@@ -74,6 +105,10 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Limpia todos los productos del carrito de un usuario.
+        /// </summary>
+        /// <param name="userId">ID del usuario.</param>
         [HttpDelete("{userId}/clear")]
         public async Task<IActionResult> ClearCart(int userId)
         {

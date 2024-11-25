@@ -14,6 +14,9 @@ using TallerBackendIDWM.Src.Services.Interface;
 
 namespace TallerBackendIDWM.Src.Controllers
 {
+    /// <summary>
+    /// Controlador para la gestión de usuarios.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -21,12 +24,21 @@ namespace TallerBackendIDWM.Src.Controllers
         private readonly IUserService _service;
         private readonly ITokenService _serviceToken;
 
+        /// <summary>
+        /// Constructor del controlador de usuarios.
+        /// </summary>
+        /// <param name="userService">Servicio de usuarios.</param>
+        /// <param name="tokenService">Servicio de tokens.</param>
         public UserController(IUserService userService, ITokenService tokenService)
         {
             _service = userService;
             _serviceToken = tokenService;
         }
 
+        /// <summary>
+        /// Obtiene la lista de usuarios.
+        /// </summary>
+        /// <returns>Lista de usuarios.</returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<UserDto>> GetUsers(){
@@ -34,6 +46,11 @@ namespace TallerBackendIDWM.Src.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Busca usuarios por un término específico.
+        /// </summary>
+        /// <param name="query">Término de búsqueda.</param>
+        /// <returns>Usuarios que coinciden con la búsqueda.</returns>
         [HttpGet("search")]
         [Authorize(Roles = "Admin")]
         public ActionResult<IEnumerable<UserDto>> SearchUser([FromQuery] string query){
@@ -41,12 +58,21 @@ namespace TallerBackendIDWM.Src.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Obtiene los géneros disponibles.
+        /// </summary>
+        /// <returns>Lista de géneros.</returns>
         [HttpGet("genders")]
         public ActionResult<IEnumerable<Gender>> GetGenders(){
             var result = _service.GetGenders().Result;
             return Ok(result);
         }
 
+        /// <summary>
+        /// Edita los datos de un usuario.
+        /// </summary>
+        /// <param name="id">ID del usuario.</param>
+        /// <param name="editUserDto">Nuevos datos del usuario.</param>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult<string>> EditUser(int id, [FromBody] EditUserDto editUserDto){
@@ -68,6 +94,12 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Cambia la contraseña de un usuario.
+        /// </summary>
+        /// <param name="id">ID del usuario.</param>
+        /// <param name="changePasswordDto">Datos necesarios para cambiar la contraseña.</param>
+        /// <returns>Mensaje de éxito o error.</returns>
         [HttpPut("{id}/password")]
         [Authorize]
         public async Task<ActionResult<string>> ChangeUserPassword(int id, [FromBody] ChangePasswordDto changePasswordDto){
@@ -89,6 +121,12 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Cambia el estado de un usuario (activo/inactivo).
+        /// </summary>
+        /// <param name="id">ID del usuario.</param>
+        /// <param name="newUserState">Nuevo estado del usuario en formato booleano (true = activo, false = inactivo).</param>
+        /// <returns>Mensaje de éxito o error.</returns>
         [HttpPut("{id}/state")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<string>> ChangeUserState(int id, [FromBody] string newUserState){
@@ -109,6 +147,10 @@ namespace TallerBackendIDWM.Src.Controllers
             }
         }
 
+        /// <summary>
+        /// Elimina la cuenta de un usuario autenticado.
+        /// </summary>
+        /// <returns>Mensaje de éxito o error.</returns>
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteUser(){

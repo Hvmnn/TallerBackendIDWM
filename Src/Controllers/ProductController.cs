@@ -8,18 +8,30 @@ using TallerBackendIDWM.Src.Services;
 using TallerBackendIDWM.Src.Services.Implements;
 using TallerBackendIDWM.Src.Services.Interface;
 
-namespace tallerBackendIDWM.Src.Controllers{
+namespace tallerBackendIDWM.Src.Controllers
+{
+    /// <summary>
+    /// Controlador para gestionar productos.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
 
+        /// <summary>
+        /// Constructor del controlador de productos.
+        /// </summary>
+        /// <param name="productService">Servicio de productos.</param>
         public ProductController(IProductService productService)
         {
             _productService = productService;
         }
 
+        /// <summary>
+        /// Obtiene todos los productos.
+        /// </summary>
+        /// <returns>Lista de productos.</returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
@@ -28,6 +40,11 @@ namespace tallerBackendIDWM.Src.Controllers{
             return Ok(products);
         }
 
+        /// <summary>
+        /// Obtiene un producto por su ID.
+        /// </summary>
+        /// <param name="id">ID del producto.</param>
+        /// <returns>Producto correspondiente al ID.</returns>
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> GetProductById(int id)
@@ -41,6 +58,11 @@ namespace tallerBackendIDWM.Src.Controllers{
             return Ok(product);
         }
 
+        /// <summary>
+        /// Crea un nuevo producto.
+        /// </summary>
+        /// <param name="productDto">Datos del producto a crear.</param>
+        /// <returns>Producto creado.</returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto productDto)
@@ -54,6 +76,11 @@ namespace tallerBackendIDWM.Src.Controllers{
             return CreatedAtAction(nameof(GetProductById), new { id = productDto.Name }, productDto);
         }
 
+        /// <summary>
+        /// Actualiza un producto existente.
+        /// </summary>
+        /// <param name="id">ID del producto a actualizar.</param>
+        /// <param name="editProductDto">Datos del producto actualizados.</param>
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto editproductDto)
@@ -77,6 +104,10 @@ namespace tallerBackendIDWM.Src.Controllers{
             }
         }
 
+        /// <summary>
+        /// Elimina un producto por su ID.
+        /// </summary>
+        /// <param name="id">ID del producto a eliminar.</param>
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteProduct(int id)
@@ -85,6 +116,13 @@ namespace tallerBackendIDWM.Src.Controllers{
             return NoContent();
         }
 
+        /// <summary>
+        /// Filtra y ordena los productos según criterios específicos.
+        /// </summary>
+        /// <param name="type">Tipo de producto.</param>
+        /// <param name="orderBy">Orden de los precios (asc o desc).</param>
+        /// <param name="searchString">Término de búsqueda por nombre.</param>
+        /// <returns>Lista de productos filtrados y ordenados.</returns>
         [HttpGet("products")]
         public async Task<IActionResult> GetProducts([FromQuery] string? type, [FromQuery] string? orderBy, [FromQuery] string? searchString)
         {
