@@ -16,12 +16,14 @@ namespace TallerBackendIDWM.Src.Services.Implements
         private readonly IGenderRepository _genderRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IMapperService _mapperService;
+        private readonly ITokenService _tokenService;
         
-        public UserService(IUserRepository userRepository, IGenderRepository genderRepository, IMapperService mapperService, IRoleRepository roleRepository){
+        public UserService(IUserRepository userRepository, IGenderRepository genderRepository, IMapperService mapperService, IRoleRepository roleRepository, ITokenService tokenService){
             _userRepository = userRepository;
             _genderRepository = genderRepository;
             _mapperService = mapperService;
             _roleRepository = roleRepository;
+            _tokenService = tokenService;
         }
         public async Task<bool> ChangeUserPassword(int id, ChangePasswordDto changePasswordDto)
         {
@@ -65,17 +67,11 @@ namespace TallerBackendIDWM.Src.Services.Implements
 
         public async Task<bool> DeleteUser(int id)
         {
-            var user = await _userRepository.GetUserById(id);
-            if(user == null){
-                throw new Exception("El usuario no existe.");
+            var user = _tokenService.GetUserIdFromToken();
+            if(user != id){
+                throw new UnauthorizedAccessException("No tienes permiso para eliminar esta cuenta.");
             }
-            
-            var result = await _userRepository.DelUser(id);
-            if(!result){
-                throw new Exception("No se pudo eliminar la cuenta");
-            }
-
-            return true;
+            return await _userRepository.DelUser(id);
         }
 
         public async Task<bool> EditUser(int id, EditUserDto editUserDto)
