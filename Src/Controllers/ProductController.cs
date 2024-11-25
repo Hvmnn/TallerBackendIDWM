@@ -86,13 +86,18 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpGet("products")]
-        public async Task<IActionResult> GetProducts([FromQuery] string? type, [FromQuery] string? orderBy)
+        public async Task<IActionResult> GetProducts([FromQuery] string? type, [FromQuery] string? orderBy, [FromQuery] string? searchString)
         {
             var products = await _productService.GetProductsAsync();
 
             if (!string.IsNullOrEmpty(type))
             {
                 products = products.Where(p => p.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             if (orderBy == "asc")
@@ -106,6 +111,7 @@ namespace tallerBackendIDWM.Src.Controllers{
 
             return Ok(products);
         }
+
 
     }
 
