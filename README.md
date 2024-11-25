@@ -65,5 +65,5 @@ dotnet run
 ## Postman
 
 Para probar el backend usando "postman", se necesita instalar el programa [Postman]
-Al abrir Postman y elegir un espacio de trabajo, debes hacer click en "Import" y seleccionar "".
+Al abrir Postman y elegir un espacio de trabajo, debes hacer click en "Import" y seleccionar "TallerBackendIDWM.postman_collection.json".
 Asegúrate que el puerto de las solicitudes coincida con el puerto de la ejecución.
