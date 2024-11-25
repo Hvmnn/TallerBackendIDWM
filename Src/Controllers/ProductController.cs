@@ -11,7 +11,6 @@ using TallerBackendIDWM.Src.Services.Interface;
 namespace tallerBackendIDWM.Src.Controllers{
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -22,6 +21,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             var products = await _productService.GetProductsAsync();
@@ -29,6 +29,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
@@ -41,6 +42,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto productDto)
         {
             if(productDto.Image == null || productDto.Image.Length == 0)
@@ -53,6 +55,7 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto editproductDto)
         {
             try
@@ -75,11 +78,35 @@ namespace tallerBackendIDWM.Src.Controllers{
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
             await _productService.DeleteProductAsync(id);
             return NoContent();
         }
+
+        [HttpGet("products")]
+        public async Task<IActionResult> GetProducts([FromQuery] string? type, [FromQuery] string? orderBy)
+        {
+            var products = await _productService.GetProductsAsync();
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                products = products.Where(p => p.Type.Equals(type, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (orderBy == "asc")
+            {
+                products = products.OrderBy(p => p.Price).ToList();
+            }
+            else if (orderBy == "desc")
+            {
+                products = products.OrderByDescending(p => p.Price).ToList();
+            }
+
+            return Ok(products);
+        }
+
     }
 
 }
