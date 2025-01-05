@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
+using TallerBackendIDWM.Src.Data;
 using TallerBackendIDWM.Src.DTOs.Shopping;
 using TallerBackendIDWM.Src.Models;
 using TallerBackendIDWM.Src.Repositories.Interfaces;
@@ -10,12 +12,15 @@ namespace TallerBackendIDWM.Src.Services.Implements
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IMapperService _mapperService;
+        private readonly DataContext _context;
 
-        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, IMapperService mapperService)
+        public ShoppingCartService(IShoppingCartRepository shoppingCartRepository, IMapperService mapperService, DataContext context)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _mapperService = mapperService;
+            _context = context;
         }
+
         public async Task AddItemToCartAsync(int userId, int productId, int quantity)
         {
             if (quantity <= 0)
@@ -43,13 +48,15 @@ namespace TallerBackendIDWM.Src.Services.Implements
                 {
                     ProductId = productId,
                     Quantity = quantity,
-                    Id = cart.Id
+                    Product = null! // No incluyas el objeto completo del producto
                 };
+
                 cart.CartItems.Add(newItem);
             }
 
             await _shoppingCartRepository.UpdateAsync(cart);
         }
+
 
 
         public async Task UpdateItemQuantityAsync(int userId, int productId, int quantity)

@@ -22,9 +22,52 @@ namespace TallerBackendIDWM.Src.Repositories.Implements
 
         public async Task UpdateAsync(ShoppingCart cart)
         {
-            _context.ShoppingCarts.Update(cart);
-            await _context.SaveChangesAsync();
+            // Obtén el carrito actual desde la base de datos, incluyendo los CartItems
+            var existingCart = await _context.ShoppingCarts
+                .Include(c => c.CartItems)
+                .FirstOrDefaultAsync(c => c.Id == cart.Id);
+
+            if (existingCart != null)
+            {
+                // Actualiza las propiedades del carrito
+                _context.Entry(existingCart).CurrentValues.SetValues(cart);
+
+                // Procesa cada CartItem en el carrito
+                foreach (var item in cart.CartItems)
+                {
+                    var existingItem = existingCart.CartItems
+                        .FirstOrDefault(ci => ci.ProductId == item.ProductId);
+
+                    if (existingItem != null)
+                    {
+                        // Actualiza el CartItem existente
+                        existingItem.Quantity = item.Quantity;
+                    }
+                    else
+                    {
+                        // Agrega un nuevo CartItem
+                        existingCart.CartItems.Add(item);
+                    }
+                }
+
+                // Elimina CartItems que ya no están en el carrito actualizado
+                foreach (var existingItem in existingCart.CartItems.ToList())
+                {
+                    if (!cart.CartItems.Any(ci => ci.ProductId == existingItem.ProductId))
+                    {
+                        _context.CartItems.Remove(existingItem);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("El carrito no existe.");
+            }
         }
+
+
         public async Task<ShoppingCart?> GetShoppingCart(int userId)
             => await _context.ShoppingCarts
                 .Include(sc => sc.CartItems)
